@@ -7,9 +7,9 @@ Auto-registration of Gmail accounts
 
 Please See:
 
-[GmailAutoReg RUS](https://t.me/DelarSoftBot?start=ID5068822808)
+[GmailAutoReg RUS](https://devel6373.github.io/GmailAutoReg/)
 
-[GmailAutoReg ENG](https://t.me/DelarSoftBot?start=ID5068822808)
+[GmailAutoReg ENG](https://devel6373.github.io/GmailAutoReg/)
 
-[GmailAutoReg CN](https://t.me/DelarSoftBot?start=ID5068822808)
+[GmailAutoReg CN](https://devel6373.github.io/GmailAutoReg/)
 
