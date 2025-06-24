@@ -222,35 +222,42 @@
             const now = new Date();
             data.timestamp = now.toLocaleString('ru-RU');
             
-            // Отправка данных
-            fetch(scriptURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (response.ok) {
-                    successMessage.style.display = 'block';
-                    setTimeout(() => {
-                        successMessage.style.display = 'none';
-                    }, 3000);
-                    form.reset();
-                } else {
-                    throw new Error('Network response was not ok');
-                }
-            })
-            .catch(error => {
-                console.error('Error!', error.message);
-                errorMessage.style.display = 'block';
-                setTimeout(() => {
-                    errorMessage.style.display = 'none';
-                }, 3000);
-            })
-            .finally(() => {
-                submitBtn.textContent = 'Отправить ответы';
-                submitBtn.classList.remove('loading');
+            // Замените fetch-запрос на этот код:
+            document.getElementById('surveyForm').addEventListener('submit', function(e) {
+              e.preventDefault();
+              
+              const formData = new FormData(this);
+              const data = {
+                Lit: formData.get('Lit'),
+                IceBurn: formData.get('IceBurn'),
+                OrnMolecula: formData.get('OrnMolecula'),
+                timestamp: new Date().toLocaleString('ru-RU')
+              };
+            
+              // Создаем скрытую форму для отправки
+              const form = document.createElement('form');
+              form.action = scriptURL;
+              form.method = 'POST';
+              form.style.display = 'none';
+            
+              // Добавляем данные как input-поля
+              for (const key in data) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = data[key];
+                form.appendChild(input);
+              }
+            
+              document.body.appendChild(form);
+              form.submit();
+              
+              // Показываем сообщение об успехе
+              successMessage.style.display = 'block';
+              setTimeout(() => {
+                successMessage.style.display = 'none';
+                this.reset();
+              }, 3000);
             });
         });
     </script>
