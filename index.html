@@ -1,265 +1,208 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Опросник для телефона</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-        body {
-            margin: 0;
-            padding: 10px;
-            background: #f0f2f5;
-        }
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        .form-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        .question {
-            padding: 18px 16px;
-            border-bottom: 1px solid #eaeaea;
-        }
-        .question:last-child {
-            border-bottom: none;
-        }
-        .question-title {
-            margin: 0 0 14px 0;
-            font-size: 17px;
-            font-weight: 600;
-            color: #202124;
-        }
-        .options {
-            display: flex;
-            gap: 8px;
-        }
-        .option {
-            flex: 1;
-            text-align: center;
-        }
-        .option input {
-            display: none;
-        }
-        .option label {
-            display: block;
-            padding: 12px 5px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            font-size: 15px;
-            color: #5f6368;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .option input:checked + label {
-            background: #1a73e8;
-            color: white;
-            font-weight: 500;
-            box-shadow: 0 2px 5px rgba(26, 115, 232, 0.3);
-        }
-        .submit-btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            background: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 17px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.3s;
-            box-shadow: 0 2px 10px rgba(26, 115, 232, 0.3);
-        }
-        .submit-btn:active {
-            background: #1765cc;
-            transform: translateY(1px);
-        }
-        .submit-btn.loading {
-            background: #6c757d;
-            pointer-events: none;
-        }
-        .status-message {
-            text-align: center;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            display: none;
-            font-size: 15px;
-        }
-        .success {
-            background: #d4edda;
-            color: #155724;
-        }
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>99% боятся статинов — разберёмся без мифов</title>
+  <meta name="description" content="Честный разбор: вред или польза статинов? Превью материалов, отзывы и доступ в закрытый Telegram-канал." />
+  <link rel="icon" href="/favicon.ico" />
+  <meta property="og:title" content="Правда о статинах — без мифов" />
+  <meta property="og:description" content="Простым языком о том, когда статины полезны, а когда нет. Зайдите и узнайте больше." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/og-image.jpg" />
+  <meta name="format-detection" content="telephone=no" />
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --muted: #4b5563;
+      --text: #1f2937;
+      --accent: #2563eb;
+      --accent-2: #16a34a;
+      --danger: #dc2626;
+      --shadow: 0 6px 20px rgba(0,0,0,.08);
+      --radius: 18px;
+      --maxw: 980px;
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: var(--bg);
+      color: var(--text); font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 20px clamp(16px, 4vw, 32px); }
+    .card { background: var(--card); border: 1px solid #e5e7eb;
+            border-radius: var(--radius); box-shadow: var(--shadow);
+    }
+
+    /* Hero */
+    .hero { padding: 28px 20px 24px; text-align: center; position: relative; overflow: hidden; }
+    .eyebrow { display: inline-block; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+               background: #f3f4f6; border-radius: 999px; padding: 8px 12px; }
+    h1 { margin: 14px auto 6px; font-size: clamp(24px, 5.6vw, 36px); line-height: 1.15; }
+    .sub { color: var(--muted); max-width: 680px; margin: 0 auto 18px; }
+    .cta {
+      display: inline-flex; justify-content: center; align-items: center; gap: 10px;
+      width: min(680px, 100%); padding: 14px 18px; font-weight: 700; font-size: 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff;
+      border: none; border-radius: 14px; cursor: pointer; text-decoration: none;
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+      transition: transform .08s ease, filter .2s ease;
+    }
+    .cta:active { transform: translateY(1px) scale(.99); }
+    .note { font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+    /* Sections */
+    section { margin: 26px 0; }
+    .section-title { font-size: clamp(20px, 4.8vw, 28px); margin: 0 0 8px; }
+    .muted { color: var(--muted); }
+
+    /* Grid bullets */
+    .bullets { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .bullet { display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: start; padding: 12px; border-radius: 12px; background: #f9fafb; border: 1px solid #e5e7eb; }
+    .icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; background: #eff6ff; }
+
+    /* Gallery */
+    .gallery { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .shot { aspect-ratio: 3/5; border-radius: 12px; background: #e5e7eb url('preview1.jpg') center/cover no-repeat; border: 1px solid #e5e7eb; position: relative; }
+    .shot:nth-child(2){ background-image: url('preview2.jpg'); }
+    .shot:nth-child(3){ background-image: url('preview3.jpg'); }
+    .shot::after { content: 'превью'; position: absolute; right: 8px; bottom: 8px; font-size: 12px; color: var(--muted); background: rgba(255,255,255,.8); padding: 4px 8px; border-radius: 999px; }
+
+    /* Testimonials */
+    .testis { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .testi { padding: 14px; border-radius: 14px; background: #f9fafb; border: 1px solid #e5e7eb; }
+    .testi b { display: block; margin-bottom: 6px; }
+
+    /* Sticky bottom CTA */
+    .sticky-cta { position: sticky; bottom: 12px; z-index: 50; margin-top: 24px; }
+
+    /* Footer */
+    footer { padding: 18px; text-align: center; color: var(--muted); font-size: 12px; }
+
+    /* Desktop tweaks */
+    @media (min-width: 820px){
+      .bullets { grid-template-columns: 1fr 1fr; }
+      .gallery { grid-template-columns: repeat(6, 1fr); }
+      .shot { grid-column: span 2; aspect-ratio: 4/5; }
+      .hero { padding: 40px 32px 32px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="form-card">
-            <form id="surveyForm">
-                <!-- Lit -->
-                <div class="question">
-                    <div class="question-title">Lit</div>
-                    <div class="options">
-                        <div class="option">
-                            <input type="radio" name="Lit" id="lit_many" value="Много" required>
-                            <label for="lit_many">Много</label>
-                        </div>
-                        <div class="option">
-                            <input type="radio" name="Lit" id="lit_few" value="Мало">
-                            <label for="lit_few">Мало</label>
-                        </div>
-                        <div class="option">
-                            <input type="radio" name="Lit" id="lit_no" value="Нет">
-                            <label for="lit_no">Нет</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- IceBurn -->
-                <div class="question">
-                    <div class="question-title">IceBurn</div>
-                    <div class="options">
-                        <div class="option">
-                            <input type="radio" name="IceBurn" id="iceburn_many" value="Много" required>
-                            <label for="iceburn_many">Много</label>
-                        </div>
-                        <div class="option">
-                            <input type="radio" name="IceBurn" id="iceburn_few" value="Мало">
-                            <label for="iceburn_few">Мало</label>
-                        </div>
-                        <div class="option">
-                            <input type="radio" name="IceBurn" id="iceburn_no" value="Нет">
-                            <label for="iceburn_no">Нет</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- OrnMolecula -->
-                <div class="question">
-                    <div class="question-title">OrnMolecula</div>
-                    <div class="options">
-                        <div class="option">
-                            <input type="radio" name="OrnMolecula" id="orn_many" value="Много" required>
-                            <label for="orn_many">Много</label>
-                        </div>
-                        <div class="option">
-                            <input type="radio" name="OrnMolecula" id="orn_few" value="Мало">
-                            <label for="orn_few">Мало</label>
-                        </div>
-                        <div class="option">
-                            <input type="radio" name="OrnMolecula" id="orn_no" value="Нет">
-                            <label for="orn_no">Нет</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <button type="submit" class="submit-btn">Отправить ответы</button>
-            </form>
-        </div>
-        
-        <div id="successMessage" class="status-message success">
-            Данные успешно отправлены! ✅
-        </div>
-        
-        <div id="errorMessage" class="status-message error">
-            Ошибка отправки. Проверьте подключение и попробуйте еще раз.
-        </div>
-    </div>
+  <main class="wrap">
+    <!-- HERO -->
+    <header class="card hero" id="top">
+      <span class="eyebrow">Разбор без мифов</span>
+      <h1>99% людей боятся статинов. Пора понять — <span style="color:var(--accent)">вред</span> или <span style="color:var(--accent-2)">польза</span>?</h1>
+      <p class="sub">Кратко, по делу и человеческим языком: когда статины действительно помогают, какие риски существуют и как отличать факты от страшилок из интернета.</p>
+      <a class="cta" href="https://t.me/your_invite_or_public" target="_blank" rel="noopener">Узнать правду в Telegram</a>
+      <div class="note">Материалы — информационные. Не заменяют консультацию врача.</div>
+    </header>
 
-    <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwgI60dib5v5UvOhxKPHAOukcqYAEOe131CnQM7aMwE3IiEUSuh232KliLR-0t6jo0f/exec';
-        const form = document.getElementById('surveyForm');
-        const submitBtn = document.querySelector('.submit-btn');
-        const successMessage = document.getElementById('successMessage');
-        const errorMessage = document.getElementById('errorMessage');
+    <!-- PROBLEM -->
+    <section class="card" aria-labelledby="p1" style="padding:16px 16px 6px;">
+      <h2 class="section-title" id="p1">Почему столько страха вокруг статинов?</h2>
+      <p class="muted" style="margin:0 0 10px">Коротко разберём популярные заблуждения — и то, что говорят исследования.</p>
+      <div class="bullets" role="list">
+        <div class="bullet" role="listitem">
+          <div class="icon" aria-hidden="true">💊</div>
+          <div><b>«Разрушают печень»</b><br><span class="muted">Что действительно известно о безопасности и мониторинге анализа крови.</span></div>
+        </div>
+        <div class="bullet" role="listitem">
+          <div class="icon" aria-hidden="true">❤️</div>
+          <div><b>«Повышают риск инфаркта»</b><br><span class="muted">Наоборот: когда и для кого доказана польза в профилактике ССЗ.</span></div>
+        </div>
+        <div class="bullet" role="listitem">
+          <div class="icon" aria-hidden="true">🧪</div>
+          <div><b>«Это заговор фармы»</b><br><span class="muted">Как отличать качественные источники от кликбейта и слухов.</span></div>
+        </div>
+        <div class="bullet" role="listitem">
+          <div class="icon" aria-hidden="true">📊</div>
+          <div><b>«Не работают после 40/60/…»</b><br><span class="muted">Где границы показаний и почему решение должен принимать врач.</span></div>
+        </div>
+      </div>
+      <div style="padding:12px 0 8px; text-align:center">
+        <a class="cta" href="#join">Перейти к материалам</a>
+      </div>
+    </section>
 
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            
-            // Проверка заполненности
-            let allAnswered = true;
-            const questions = form.querySelectorAll('.question');
-            questions.forEach(q => {
-                const inputs = q.querySelectorAll('input[type="radio"]');
-                const checked = [...inputs].some(input => input.checked);
-                if (!checked) {
-                    allAnswered = false;
-                    q.style.backgroundColor = '#fff9f9';
-                    setTimeout(() => q.style.backgroundColor = '', 1000);
-                }
-            });
-            
-            if (!allAnswered) {
-                alert('Пожалуйста, ответьте на все вопросы');
-                return;
-            }
-            
-            // Показать состояние загрузки
-            submitBtn.textContent = 'Отправка...';
-            submitBtn.classList.add('loading');
-            
-            // Сбор данных формы
-            const formData = new FormData(form);
-            const data = {};
-            for (const [key, value] of formData.entries()) {
-                data[key] = value;
-            }
-            
-            // Добавляем метку времени
-            const now = new Date();
-            data.timestamp = now.toLocaleString('ru-RU');
-            
-            // Замените fetch-запрос на этот код:
-            document.getElementById('surveyForm').addEventListener('submit', function(e) {
-              e.preventDefault();
-              
-              const formData = new FormData(this);
-              const data = {
-                Lit: formData.get('Lit'),
-                IceBurn: formData.get('IceBurn'),
-                OrnMolecula: formData.get('OrnMolecula'),
-                timestamp: new Date().toLocaleString('ru-RU')
-              };
-            
-              // Создаем скрытую форму для отправки
-              const form = document.createElement('form');
-              form.action = scriptURL;
-              form.method = 'POST';
-              form.style.display = 'none';
-            
-              // Добавляем данные как input-поля
-              for (const key in data) {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = key;
-                input.value = data[key];
-                form.appendChild(input);
-              }
-            
-              document.body.appendChild(form);
-              form.submit();
-              
-              // Показываем сообщение об успехе
-              successMessage.style.display = 'block';
-              setTimeout(() => {
-                successMessage.style.display = 'none';
-                this.reset();
-              }, 3000);
-            });
-        });
-    </script>
+    <!-- SOLUTION / WHAT INSIDE -->
+    <section class="card" aria-labelledby="p2" style="padding:16px;">
+      <h2 class="section-title" id="p2">Что вы получите внутри канала</h2>
+      <ul class="muted" style="margin:0 0 10px; padding-left: 18px">
+        <li>Разбор мифов и практических кейсов простым языком;</li>
+        <li>Короткие конспекты исследований и ссылочные материалы;</li>
+        <li>Ответы на частые вопросы и структурированные шпаргалки;</li>
+        <li>Уведомления о новых постах без лишнего шума.</li>
+      </ul>
+      <div class="gallery" aria-label="Превью материалов">
+        <div class="shot" title="Превью поста 1"></div>
+        <div class="shot" title="Превью поста 2"></div>
+        <div class="shot" title="Превью поста 3"></div>
+      </div>
+      <p class="muted" style="margin:12px 0 0">*Скриншоты — примеры. Полные материалы доступны участникам канала.</p>
+    </section>
+
+    <!-- SOCIAL PROOF -->
+    <section class="card" aria-labelledby="p3" style="padding:16px;">
+      <h2 class="section-title" id="p3">Что говорят читатели</h2>
+      <div class="testis">
+        <div class="testi"><b>Анна</b><span class="muted">«Наконец-то разобралась, где польза, а где накрутка страхов. Подача короткая и понятная»</span></div>
+        <div class="testi"><b>Дмитрий</b><span class="muted">«Нравится, что приводятся ссылки на источники и есть чек-листы»</span></div>
+        <div class="testi"><b>Ольга</b><span class="muted">«Захожу на 5 минут — выхожу с ясным ответом, без воды»</span></div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section id="join" class="card" aria-labelledby="p4" style="padding:16px;">
+      <h2 class="section-title" id="p4">Готовы перестать бояться и понять тему?</h2>
+      <p class="muted">Присоединяйтесь к закрытому каналу. Никакого спама — только польза и структурированные материалы.</p>
+      <div class="sticky-cta">
+        <a class="cta" href="https://t.me/your_invite_or_public" target="_blank" rel="noopener">Вступить в канал в Telegram</a>
+        <div class="note">Нажимая, вы переходите в Telegram. Если ссылка не открывается, проверьте установлен ли Telegram-клиент.</div>
+      </div>
+    </section>
+
+    <!-- DISCLAIMER -->
+    <section class="card" aria-labelledby="p5" style="padding:14px;">
+      <h2 class="section-title" id="p5">Важно</h2>
+      <p class="muted">Информация на сайте представлена в ознакомительных целях и не является медицинской рекомендацией. Назначение и отмену лекарственных средств осуществляет только врач, учитывая индивидуальные показания и противопоказания.</p>
+    </section>
+
+    <footer>
+      © <span id="year"></span> Правда о статинах · Все права защищены
+    </footer>
+  </main>
+
+  <!-- Optional: VK Pixel / Analytics placeholder -->
+  <!--
+    Вставьте сюда пиксель VK / Метрику:
+    <script>/* код пикселя */</script>
+  -->
+
+  <script>
+    // simple helpers
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth scroll for internal anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if(id.length > 1){ e.preventDefault(); document.querySelector(id)?.scrollIntoView({behavior:'smooth', block:'start'}); }
+      });
+    });
+
+    // UTM keep for Telegram link
+    const tgLinks = document.querySelectorAll('a[href*="t.me/"]');
+    const params = new URLSearchParams(window.location.search);
+    if ([...params].length) {
+      tgLinks.forEach(link => {
+        const url = new URL(link.href);
+        for (const [k, v] of params) url.searchParams.set(k, v);
+        link.href = url.toString();
+      });
+    }
+  </script>
 </body>
 </html>
